@@ -20,9 +20,9 @@ from email import policy
 from email.parser import BytesParser
 
 
-eml_regex = re.compile('.*\\.eml')
+eml_regex = re.compile(".*\\.eml")
 
-output_mbox_file="emails.mbox"
+output_mbox_file = "emails.mbox"
 if os.path.exists(output_mbox_file):
     print(f"WARN: Deleting existing mbox: {output_mbox_file}")
     os.remove(output_mbox_file)
@@ -34,7 +34,7 @@ for root, dirs, files in os.walk("emails/yann@johncloud.fr", topdown=True):
     eml_files = list(filter(eml_regex.match, files))
     for eml_file in eml_files:
         eml_file_path = os.path.join(root, eml_file)
-        with open(eml_file_path, 'rb') as f:
+        with open(eml_file_path, "rb") as f:
             msg = BytesParser(policy=policy.default).parse(f)
             destination.add(mailbox.MHMessage(msg))
 

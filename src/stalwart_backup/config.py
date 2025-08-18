@@ -27,7 +27,7 @@ class Config(BaseSettings):
     )
 
     LOGLEVEL: str
-    SAVE_DIR: Path
+    MBOX_FILE: Path
     IMAP: ImapConfiguration
     SYNC_PERIOD: int
 

@@ -9,6 +9,8 @@ requires-python = ">=3.11"
 readme = "README.md"
 description = ""
 dependencies = [
+    "pydantic-settings>=2.10.1",
+    "python-json-logger>=3.3.0",
 ]
 
 [project.urls]

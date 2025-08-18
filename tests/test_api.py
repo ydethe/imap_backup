@@ -1,15 +1,11 @@
 import unittest
 
-from imapsync.Email import Email
-from imapsync.__main__ import sync_all
-from imapsync.imap_sync import connect_to_imap
-from imapsync.config import config
+from stalwart_backup.Email import Email
+from stalwart_backup.imap_sync import connect_to_imap
+from stalwart_backup.config import config
 
 
 class TestIMAPSync(unittest.TestCase):
-    def test_main(self):
-        sync_all()
-
     def test_error(self):
         imap_conf = config.IMAP_LIST[1]
         mail = connect_to_imap(imap_conf)
@@ -25,5 +21,4 @@ class TestIMAPSync(unittest.TestCase):
 if __name__ == "__main__":
     a = TestIMAPSync()
 
-    # a.test_main()
     a.test_error()

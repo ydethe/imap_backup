@@ -1,7 +1,5 @@
 from pathlib import Path
-from typing import List
 
-from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -30,13 +28,8 @@ class Config(BaseSettings):
 
     LOGLEVEL: str
     SAVE_DIR: Path
-    IMAP_LIST: List[ImapConfiguration]
+    IMAP: ImapConfiguration
     SYNC_PERIOD: int
-
-    @field_validator("IMAP_LIST", mode="before")
-    @classmethod
-    def validate_endpoints(cls, configs: dict) -> List[ImapConfiguration]:
-        return [ImapConfiguration(**config) for config in configs.values()]
 
 
 config = Config()

@@ -3,6 +3,7 @@
 *.mbox
 migrations
 .gradio
+Maildir/
 emails
 *.db
 *.bak

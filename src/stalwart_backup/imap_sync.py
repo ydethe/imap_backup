@@ -1,9 +1,14 @@
+import email
 import imaplib
+import os
 from pathlib import Path
+import shutil
+import time
 from typing import List
 import mailbox
 from email.parser import BytesParser
 from email import policy
+from email.utils import parsedate_tz, mktime_tz
 
 from .config import config, ImapConfiguration
 from . import logger
@@ -32,7 +37,6 @@ def sync_mailbox(mail: imaplib.IMAP4_SSL):
         mail: Handler to the IMAP server, got with a call to `connect_to_imap`
 
     """
-    label = config.IMAP.LABEL
     folder_name = config.IMAP.MAILBOX
 
     try:
@@ -50,11 +54,13 @@ def sync_mailbox(mail: imaplib.IMAP4_SSL):
         return
 
     uids: List[bytes] = data[0].split()
-    # folder: Path = config.SAVE_DIR / label
-    # folder.mkdir(parents=True, exist_ok=True)
 
-    destination = mailbox.mbox(config.MBOX_FILE)
-    destination.lock()
+    dest=config.MAILDIR_FOLDER/"Maildir"
+    if dest.exists():
+        print(f"WARN: Deleting existing Maildir: {dest}")
+        shutil.rmtree(dest,ignore_errors=True)
+
+    destination = mailbox.Maildir(dest, create=True)
 
     logger.info(f"Got {len(uids)} messages")
     for uid in uids:
@@ -64,14 +70,32 @@ def sync_mailbox(mail: imaplib.IMAP4_SSL):
         typ, msg_data = mail.uid("fetch", uid, "(RFC822)")
         if typ == "OK":
             raw_msg: bytes = msg_data[0][1]
-            # email = save_eml(uid_str, raw_msg, folder)
-            msg = BytesParser(policy=policy.default).parsebytes(raw_msg)
-            destination.add(mailbox.MHMessage(msg))
+            msg = email.message_from_bytes(raw_msg)
+
+            # Convert to mailbox.mboxMessage to keep metadata
+            mbox_msg = mailbox.mboxMessage(msg)
+
+            # Ensure the "Date" field from the email is preserved as delivery date
+            if "date" in msg:
+                try:
+                    ts = mktime_tz(parsedate_tz(msg["date"]))
+                    mbox_msg.set_from(from_=msg.get("From", "unknown"), time_=time.gmtime(ts))
+                except Exception:
+                    # fallback: no conversion, keep raw
+                    mbox_msg.set_from(msg.get("From", "unknown"))
+                    logger.warning(f"No date found for {uid}")
+            else:
+                mbox_msg.set_from(msg.get("From", "unknown"))
+                logger.warning(f"No date found for {eml_file}")
+
+            key = destination.add(mbox_msg)
+            msg_pth=dest/"new"/key
+            os.utime(msg_pth, (ts,ts))
+
         else:
             logger.warning(f"Failed to fetch message UID {uid_str}")
 
     destination.flush()
-    destination.unlock()
 
 
 def sync_all():

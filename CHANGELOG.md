@@ -8,17 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 <!-- insertion marker -->
 ## Unreleased
 
-<small>[Compare with latest](https://github.com/ydethe/imapsync/compare/781333482a41fa76b3684586e891df27cc7d2146...HEAD)</small>
+<small>[Compare with latest](https://github.com/ydethe/imap_backup/compare/528283d74d9d4375112a03b7ad0334311ab4a616...HEAD)</small>
 
 ### Added
 
-- Added docker secrets ([e146cb7](https://github.com/ydethe/imapsync/commit/e146cb77be9862229180cc9c42653c0c0bd6786f) by Yann de The).
-- Added scheduled syncing ([9e4f28a](https://github.com/ydethe/imapsync/commit/9e4f28ae1d60fdf50e241f13d758a2a9a24ccce9) by Yann de The).
-- Added proress bar ([ea1a8ed](https://github.com/ydethe/imapsync/commit/ea1a8ed84be9db05d5f3219f239b7497529ab1a9) by Yann de The).
-- Added sync database ([caa6f52](https://github.com/ydethe/imapsync/commit/caa6f52c277509b68d74d7a82750be961bcc1a55) by Yann de The).
-
-### Fixed
-
-- Fixed image ([1886ae0](https://github.com/ydethe/imapsync/commit/1886ae0b9cac4c3188028757ea72c578306abaad) by Yann de The).
+- Added time fix ([f2b813c](https://github.com/ydethe/imap_backup/commit/f2b813c80a9084975e2f56313075e0aae658c5a5) by Yann de The).
+- Added eml2mbox.py ([8aa1288](https://github.com/ydethe/imap_backup/commit/8aa128872ec0953687b87621aa147a4d655dc034) by Yann de The).
 
 <!-- insertion marker -->

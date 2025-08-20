@@ -222,11 +222,12 @@ wheels = [
 
 [[package]]
 name = "imap-backup"
-version = "0.1.dev12+gf97cd80.d20250820"
+version = "0.1.dev13+g7c052ec.d20250820"
 source = { editable = "." }
 dependencies = [
     { name = "pydantic-settings" },
     { name = "python-json-logger" },
+    { name = "pyyaml" },
     { name = "tqdm" },
     { name = "typer" },
 ]
@@ -257,6 +258,7 @@ test = [
 requires-dist = [
     { name = "pydantic-settings", specifier = ">=2.10.1" },
     { name = "python-json-logger", specifier = ">=3.3.0" },
+    { name = "pyyaml", specifier = ">=6.0.2" },
     { name = "tqdm", specifier = ">=4.67.1" },
     { name = "typer", specifier = ">=0.16.1" },
 ]

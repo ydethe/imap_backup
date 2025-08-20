@@ -47,6 +47,7 @@ doc = [
     "pylint>=3.3.2",
 ]
 test = [
+    "pyyaml>=6.0.2",
     "pytest-asyncio>=0.25.0",
     "pytest>=8.3.4",
     "pytest-cov>=6.0.0",

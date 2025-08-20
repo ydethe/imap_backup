@@ -21,13 +21,13 @@ def imap_backup(
     loglevel: Annotated[str, typer.Option(envvar="LOGLEVEL")] = "INFO",
 ):
     config = Config(
-        LOGLEVEL=loglevel,
-        MAILDIR_FOLDER=output,
-        SERVER=host,
-        PORT=port,
-        USERNAME=username,
-        PASSWORD=password,
-        MAILBOX=mailbox,
+        loglevel=loglevel,
+        maildir_folder=output,
+        server=host,
+        port=port,
+        username=username,
+        password=password,
+        mailbox=mailbox,
     )
 
     sync_all(config)

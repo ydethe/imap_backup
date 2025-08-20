@@ -1,13 +1,10 @@
 import email
 import imaplib
 import os
-from pathlib import Path
 import shutil
 import time
 from typing import List
 import mailbox
-from email.parser import BytesParser
-from email import policy
 from email.utils import parsedate_tz, mktime_tz
 
 from .config import config, ImapConfiguration
@@ -57,7 +54,7 @@ def sync_mailbox(mail: imaplib.IMAP4_SSL):
 
     dest = config.MAILDIR_FOLDER / "Maildir"
     if dest.exists():
-        print(f"WARN: Deleting existing Maildir: {dest}")
+        logger.warning(f"Deleting existing Maildir: {dest}")
         shutil.rmtree(dest, ignore_errors=True)
 
     destination = mailbox.Maildir(dest, create=True)
@@ -83,12 +80,14 @@ def sync_mailbox(mail: imaplib.IMAP4_SSL):
                 except Exception:
                     # fallback: no conversion, keep raw
                     mbox_msg.set_from(msg.get("From", "unknown"))
-                    logger.warning(f"No date found for {uid}")
+                    logger.warning(f"No date found for message {uid}")
             else:
                 mbox_msg.set_from(msg.get("From", "unknown"))
-                logger.warning(f"No date found for {eml_file}")
+                logger.warning(f"No date found for message {uid}")
 
             key = destination.add(mbox_msg)
+
+            # Creation and modification date update
             msg_pth = dest / "new" / key
             os.utime(msg_pth, (ts, ts))
 

@@ -3,7 +3,7 @@ requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [project]
-name = "stalwart_backup"
+name = "imap_backup"
 dynamic = ["version"]
 requires-python = ">=3.11"
 readme = "README.md"
@@ -11,12 +11,13 @@ description = ""
 dependencies = [
     "pydantic-settings>=2.10.1",
     "python-json-logger>=3.3.0",
+    "tqdm>=4.67.1",
 ]
 
 [project.urls]
-"Bug Tracker" = "https://github.com/ydethe/stalwart_backup/-/issues"
-Homepage = "https://github.com/ydethe/stalwart_backup"
-Source = "https://github.com/ydethe/stalwart_backup"
+"Bug Tracker" = "https://github.com/ydethe/imap_backup/-/issues"
+Homepage = "https://github.com/ydethe/imap_backup"
+Source = "https://github.com/ydethe/imap_backup"
 
 [tool.pylint.format]
 max-line-length = 100

@@ -7,6 +7,8 @@ from typing import List
 import mailbox
 from email.utils import parsedate_tz, mktime_tz
 
+from tqdm import tqdm
+
 from .config import config, ImapConfiguration
 from . import logger
 
@@ -60,7 +62,7 @@ def sync_mailbox(mail: imaplib.IMAP4_SSL):
     destination = mailbox.Maildir(dest, create=True)
 
     logger.info(f"Got {len(uids)} messages")
-    for uid in uids:
+    for uid in tqdm(uids):
         uid_str = uid.decode()
         # eml_path = folder / f"{uid_str}.eml"
 

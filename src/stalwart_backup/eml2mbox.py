@@ -1,17 +1,4 @@
-"""
-Simple Python 3 script to convert eml Email files to mbox files.
-Convert script requires only The Python Standard Libraries.
-This script is useful to convert eml files exported from
-E-Mail Accounts to mbox files. Mbox files can be imported
-in common email clients such as Outlook, Thunderbird, or
-Gnome Evolution.
-Placing eml files to be converted to mbox files:
- * place all your eml files into the "in" directory:
-   e.g. in/username_at_email_domain/inbox/123456.eml
-Output (mbox-out):
- * mbox file for each of the discovered subdirectories with eml files.
-"""
-
+# https://github.com/stalwartlabs/stalwart/discussions/1777
 
 import re
 import os
@@ -20,6 +7,7 @@ import email
 from email.utils import parsedate_tz, mktime_tz
 import time
 
+from stalwart_backup import logger
 from stalwart_backup.config import config
 from stalwart_backup.imap_sync import connect_to_imap
 
@@ -53,15 +41,15 @@ eml_regex = re.compile(".*\\.eml")
 
 
 def create_mbox_file():
-    output_mbox_file = "emails.mbox"
+    output_mbox_file = "yann.mbox"
     maildir_path = "Maildir"
 
     if os.path.exists(output_mbox_file):
         print(f"WARN: Deleting existing mbox: {output_mbox_file}")
         os.remove(output_mbox_file)
 
-    destination = mailbox.mbox(output_mbox_file)
-    # destination = mailbox.Maildir(maildir_path, create=True)
+    # destination = mailbox.mbox(output_mbox_file)
+    destination = mailbox.Maildir(maildir_path, create=True)
 
     for root, dirs, files in os.walk("emails/yann@johncloud.fr", topdown=True):
         eml_files = list(filter(eml_regex.match, files))
@@ -81,13 +69,15 @@ def create_mbox_file():
                 except Exception:
                     # fallback: no conversion, keep raw
                     mbox_msg.set_from(msg.get("From", "unknown"))
+                    logger.warning(f"No date found for {eml_file}")
             else:
                 mbox_msg.set_from(msg.get("From", "unknown"))
+                logger.warning(f"No date found for {eml_file}")
 
             destination.add(mbox_msg)
 
     destination.flush()
 
 
-# delete_all_emails()
-create_mbox_file()
+delete_all_emails()
+# create_mbox_file()

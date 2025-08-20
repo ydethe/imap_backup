@@ -55,10 +55,10 @@ def sync_mailbox(mail: imaplib.IMAP4_SSL):
 
     uids: List[bytes] = data[0].split()
 
-    dest=config.MAILDIR_FOLDER/"Maildir"
+    dest = config.MAILDIR_FOLDER / "Maildir"
     if dest.exists():
         print(f"WARN: Deleting existing Maildir: {dest}")
-        shutil.rmtree(dest,ignore_errors=True)
+        shutil.rmtree(dest, ignore_errors=True)
 
     destination = mailbox.Maildir(dest, create=True)
 
@@ -89,8 +89,8 @@ def sync_mailbox(mail: imaplib.IMAP4_SSL):
                 logger.warning(f"No date found for {eml_file}")
 
             key = destination.add(mbox_msg)
-            msg_pth=dest/"new"/key
-            os.utime(msg_pth, (ts,ts))
+            msg_pth = dest / "new" / key
+            os.utime(msg_pth, (ts, ts))
 
         else:
             logger.warning(f"Failed to fetch message UID {uid_str}")

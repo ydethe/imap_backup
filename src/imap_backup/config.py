@@ -3,33 +3,17 @@ from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class ImapConfiguration(BaseSettings):
-    model_config = SettingsConfigDict(
-        case_sensitive=True,
-        extra="allow",
-    )
-
-    LABEL: str
-    IMAP_SERVER: str
-    IMAP_PORT: int
-    USERNAME: str
-    PASSWORD: str
-    MAILBOX: str
-
-
 class Config(BaseSettings):
     model_config = SettingsConfigDict(
         case_sensitive=True,
-        env_file=".env",
         env_file_encoding="utf-8",
         extra="allow",
-        env_nested_delimiter="__",
     )
 
-    LOGLEVEL: str
-    MAILDIR_FOLDER: Path
-    IMAP: ImapConfiguration
-    SYNC_PERIOD: int
-
-
-config = Config()
+    LOGLEVEL: str = "info"
+    MAILDIR_FOLDER: Path = Path(".")
+    SERVER: str = "localhost"
+    PORT: int = 993
+    USERNAME: str = "foo"
+    PASSWORD: str = "bar"
+    MAILBOX: str = "INBOX"

@@ -21,16 +21,15 @@ To run tests, just run:
 """
 
 import sys
+import os
 import logging
 
 from pythonjsonlogger import jsonlogger
 
-from .config import config
-
 
 # création de l'objet logger qui va nous servir à écrire dans les logs
 logger = logging.getLogger("imap_backup_logger")
-logger.setLevel(config.LOGLEVEL.upper())
+logger.setLevel(os.environ.get("LOGLEVEL", "info").upper())
 
 # Create stream handler for stdout
 logHandler = logging.StreamHandler(sys.stdout)

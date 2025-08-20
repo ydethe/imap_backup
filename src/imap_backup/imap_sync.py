@@ -9,26 +9,26 @@ from email.utils import parsedate_tz, mktime_tz
 
 from tqdm import tqdm
 
-from .config import config, ImapConfiguration
+from .config import Config
 from . import logger
 
 
-def connect_to_imap(cfg: ImapConfiguration) -> imaplib.IMAP4_SSL:
+def connect_to_imap(config: Config) -> imaplib.IMAP4_SSL:
     """Connect to the IMAP server
 
     Args:
-        cfg: Connection information
+        config: Connection information
 
     Returns:
         A object to interact with the IMAP server
 
     """
-    mail = imaplib.IMAP4_SSL(cfg.IMAP_SERVER, cfg.IMAP_PORT)
-    mail.login(cfg.USERNAME, cfg.PASSWORD)
+    mail = imaplib.IMAP4_SSL(config.SERVER, config.PORT)
+    mail.login(config.USERNAME, config.PASSWORD)
     return mail
 
 
-def sync_mailbox(mail: imaplib.IMAP4_SSL):
+def sync_mailbox(config: Config, mail: imaplib.IMAP4_SSL):
     """
     Download and process emails
 
@@ -36,7 +36,7 @@ def sync_mailbox(mail: imaplib.IMAP4_SSL):
         mail: Handler to the IMAP server, got with a call to `connect_to_imap`
 
     """
-    folder_name = config.IMAP.MAILBOX
+    folder_name = config.MAILBOX
 
     try:
         typ, data = mail.select(folder_name, readonly=True)
@@ -99,14 +99,14 @@ def sync_mailbox(mail: imaplib.IMAP4_SSL):
     destination.flush()
 
 
-def sync_all():
+def sync_all(config: Config):
     logger.info(72 * "=")
-    logger.info(f"Syncing account '{config.IMAP.LABEL}")
+    logger.info(f"Syncing account '{config.USERNAME}")
 
-    mail = connect_to_imap(config.IMAP)
+    mail = connect_to_imap(config)
 
-    sync_mailbox(mail)
+    sync_mailbox(config, mail)
 
     mail.logout()
 
-    logger.info(f"--> Done syncing account '{config.IMAP.LABEL}")
+    logger.info(f"--> Done syncing account '{config.USERNAME}")

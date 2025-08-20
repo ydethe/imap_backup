@@ -12,12 +12,16 @@ dependencies = [
     "pydantic-settings>=2.10.1",
     "python-json-logger>=3.3.0",
     "tqdm>=4.67.1",
+    "typer>=0.16.1",
 ]
 
 [project.urls]
 "Bug Tracker" = "https://github.com/ydethe/imap_backup/-/issues"
 Homepage = "https://github.com/ydethe/imap_backup"
 Source = "https://github.com/ydethe/imap_backup"
+
+[project.scripts]
+imapbackup = "imap_backup.__main__:app"
 
 [tool.pylint.format]
 max-line-length = 100
